@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './carousel.module.css';
 
@@ -26,12 +26,21 @@ export default function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const nextSlide = () => {
-    setCurrent((current + 1) % slides.length);
+    setCurrent((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setCurrent((current - 1 + slides.length) % slides.length);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
+
+  // Auto-slide toutes les 5 secondes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000); // 5000ms = 4 secondes
+
+    return () => clearInterval(interval); // Nettoyage
+  }, [current]); // <- Tu peux aussi mettre [] pour que ça ne reset pas à chaque fois
 
   return (
     <div className={styles.carousel}>
@@ -50,7 +59,11 @@ export default function Carousel() {
           key={index}
           className={`${styles.slide} ${index === current ? styles.active : ''}`}
         >
-          <Image src={slide.src} alt={slide.title} fill className={styles.image}
+          <Image
+            src={slide.src}
+            alt={slide.title}
+            fill
+            className={styles.image}
           />
           <div className={styles.caption}>
             <h2 className={styles.pixelFont}>{slide.title}</h2>
