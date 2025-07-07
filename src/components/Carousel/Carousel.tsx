@@ -18,7 +18,7 @@ const slides = [
   {
     src: '/images/slide3.jpg',
     title: 'Zacian and Zamazenta',
-    description: ' Collect the rarest and most powerful cards in the game!',
+    description: 'Collect the rarest and most powerful cards in the game!',
   },
 ];
 
@@ -33,27 +33,16 @@ export default function Carousel() {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  // Auto-slide toutes les 5 secondes
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 4000); // 5000ms = 4 secondes
-
-    return () => clearInterval(interval); // Nettoyage
-  }, [current]); // <- Tu peux aussi mettre [] pour que ça ne reset pas à chaque fois
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [current]);
 
   return (
     <div className={styles.carousel}>
-      <div className={styles.indicators}>
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`${styles.indicator} ${index === current ? styles.active : ''}`}
-            onClick={() => setCurrent(index)}
-          />
-        ))}
-      </div>
-
+      {/* Slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -72,8 +61,31 @@ export default function Carousel() {
         </div>
       ))}
 
-      <button onClick={prevSlide} className={styles.prev}>‹</button>
-      <button onClick={nextSlide} className={styles.next}>›</button>
+      {/* Contrôles : flèches + Pokéballs */}
+      <div className={styles.controls}>
+        <button onClick={prevSlide} className={styles.controlButton}>
+          ‹
+        </button>
+
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrent(index)}
+            className={styles.pokeballButton}
+          >
+            <Image
+              src={index === current ? '/images/pokeball2.png' : '/images/pokeball.png'}
+              alt={`Slide ${index + 1}`}
+              width={40}
+              height={40}
+            />
+          </button>
+        ))}
+
+        <button onClick={nextSlide} className={styles.controlButton}>
+          ›
+        </button>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   height: 70vh;
-  overflow: hidden;
   font-family: var(--font-vt), monospace;
   font-size: 30px;
 }
@@ -39,47 +38,35 @@
   max-width: 80%;
 }
 
-.indicators {
+.controls {
   position: absolute;
-  bottom: 1rem;
+  bottom: -4rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  align-items: center;
   gap: 1rem;
+  z-index: 3;
 }
 
-.indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #aaa;
+.controlButton {
+  background: none;
   border: none;
-  cursor: pointer;
-}
-
-.indicator.active {
-  background: white;
-}
-
-.prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   font-size: 2rem;
-  color: white;
-  background: rgba(0,0,0,0.5);
-  border: none;
-  padding: 1rem;
+  color: rgb(0, 0, 0);
   cursor: pointer;
-  z-index: 2;
 }
 
-.prev {
-  left: 0;
+.pokeballButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-.next {
-  right: 0;
+.pokeballImage {
+  width: 24px;
+  height: 24px;
 }
 .pixelFont {
  text-shadow:
@@ -87,4 +74,9 @@
     0 0 4px white,
     0 0 6px white,
     0 0 8px white;
+}
+
+/* On supprime l'ancien .indicators si nécessaire */
+.indicators {
+  display: none;
 }
