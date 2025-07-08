@@ -1,0 +1,18 @@
+.shopcontainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.presentoir{
+    height: auto;
+    width: 90rem;
+    z-index: 5;
+}
+.fond{
+    background-color:rgb(179, 73, 13);
+    height: 300px;
+    width: 1300px;
+    z-index: 0;
+    position: absolute;
+    top: 3rem;
+}

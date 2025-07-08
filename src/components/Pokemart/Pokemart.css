@@ -1,64 +1,94 @@
 .pokemart-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--font-vt), sans-serif;
-  text-align: center;
-  margin-top: 12rem;
-}
-
-.top-row {
-  display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  height: 650px;
   position: relative;
-  gap: 10rem;
+  margin-bottom: 20px;
+  margin-top: 50px
+}
+.pokemart-grass {
+    background-image: radial-gradient(rgb(96, 174, 83) 0%,rgb(45, 102, 35) 110%);
+    /* background-color: rgb(96, 174, 83); */
+    width: 90%;
+    height: 40%;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    border-bottom: 20px solid rgb(1, 49, 1);
 }
 
-.left .eleveuse {
-  position: absolute;
-  height: 600;
-  width: auto;
-  top: -110px;
-  z-index: 100;
+.eleveuse {
+    position: relative;
+    margin-bottom: 100px;
+    width: 1000px;
+    height: 100%;
+    z-index: 4;
+}
+.textbox{
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: var(--font-vt), monospace;
+    position: absolute;
+    z-index: 4;
+    background-color: white;
+    top: 2rem;
+    left: 50rem;
+    border: 7px solid rgb(22, 206, 208);
+    border-radius: 20px;
+    border-inline: 20px solid rgb(22, 206, 208);
+}
+.buisson{
+    position: absolute;
+    z-index: 5;
+    right: 15rem;
+}
+.buisson2{
+    position: absolute;
+    z-index: 5;
+    left: 14rem;
+}
+.pancarte{
+    position: absolute;
+    z-index: 6;
+    right: 23rem;
+    bottom: 3rem;
+}
+.button1{
+    font-family: var(--font-vt), monospace;
+    position: absolute;
+    z-index: 7;
+    top: 27.6rem;
+    right: 26rem;
+    border: none;
+    font-size: 50px;
+    background-color: transparent;
+    cursor: pointer;
+    
+}
+.button1:hover{
+    color: rgb(0, 84, 4);
+}
+.porte{
+    position: absolute;
+    z-index: 3;
+    bottom: 3rem;
+    left: 16.3rem;
+    transition: 0.5s;
+}
+.pokemart-in{
+    background-color: rgb(0, 49, 74);
+    width: 100px;
+    height: 120px;
+    position: absolute;
+    bottom: 13.3rem;
+    transform: rotate(10deg);
+    right: 37rem;
+    z-index: 2;
 }
 
-.right {
-  position: relative;
-}
-
-.textbox {
-  position: absolute;
-  top: -110px;
-  left: 100px;
-  height: 70px;
-  width: 350px;
-}
-
-.pokemart-img {
-  margin-top: 3rem;
-  margin-left: 3rem;
-  width: 400px;
-  height: auto;
-}
-
-.bottom-text {
-  margin-top: 0rem;
-  margin-left: 5rem;
-}
-
-.enter-button {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.7rem 2rem;
-  background-color: #7dd3fc;
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 10px;
-  transition: background-color 0.3s;
-}
-
-.enter-button:hover {
-  background-color: #38bdf8;
+.pokemart-container:has(.button1:hover) .porte {
+    left: 19rem;
+    bottom: 2.8rem;
 }

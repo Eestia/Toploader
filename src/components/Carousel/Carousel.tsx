@@ -83,7 +83,7 @@ export default function Carousel() {
         ))}
 
         <button onClick={nextSlide} className={styles.controlButton}>
-          ›
+            ›
         </button>
       </div>
     </div>

@@ -2,23 +2,38 @@
 import Image from 'next/image';
 import './Pokemart.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Pokemart() {
+
+    const router = useRouter()
+
+
   return (
     <div className="pokemart-container">
-      <div className="top-row">
-        <div className="left">
-          <Image src="/images/eleveuse.webp" alt="eleveuse" width={300} height={500} className="eleveuse" />
+        <Image src="/images/pokeshop2.png" alt="eleveuse" width={1500} height={900} className="eleveuse" />
+        <div className='pokemart-in'></div>
+            <Image src="/images/porte.png" alt="porte" width={1000} height={650} className="porte" />
+        <div className='textbox'>
+            <h2>
+                oh! vous souhaitez acheter des cartes?
+            </h2>
         </div>
-        <div className="right">
-            <Image src="/images/textbox.webp" alt="textbox" width={250} height={80} className="textbox" />
-            <Image src="/images/pokemart.webp" alt="pokemart" width={300} height={300} className="pokemart-img" />
-        <div className="bottom-text">
-            <p>rendez-vous directement sur notre catalogue,<br />faites votre choix et passez en caisse !</p>
-            <Link href="/catalogue" className="enter-button">Entrer</Link>
+        <div>
+            <Image src="/images/buisson.png" alt="buisson1" width={300} height={300} className="buisson" />
         </div>
+        <div>
+            <Image src="/images/buisson.png" alt="buisson2" width={200} height={200} className="buisson2" />
         </div>
-      </div>
+         <div>
+            <Image src="/images/pancarte.png" alt="pancarte" width={220} height={220} className="pancarte" />
+        </div>
+        <div>
+            <button onClick={()=> router.push("/shop")} className='button1'>
+                ENTRER
+            </button>
+        </div>
+    <div className='pokemart-grass'></div>
     </div>
   );
 }
