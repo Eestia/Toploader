@@ -1,0 +1,45 @@
+.carte{
+    position: relative;
+    height: auto;
+    width: 400px;
+    z-index: 3;
+}
+.carte-container{
+    position: relative;
+    font-family: var(--font-vt), monospace;
+}
+#nom{
+    position: absolute;
+    top: 1rem;
+    left: 3rem;
+    z-index: 10;
+}
+#type{
+    position: absolute;
+    top: 18rem;
+    left: 3rem;
+    z-index: 10;
+}
+#atk{
+    position: absolute;
+    top: 23rem;
+    left: 3rem;
+    z-index: 10;
+}
+#bgcard{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    width: 350px;
+    height: 300px;
+    z-index: 1;
+    top: 3rem;
+    left: 1.5rem;
+}
+.pkmnimg{
+    position: absolute;
+    left: 7rem;
+    top: 5.5rem;
+    z-index: 10;
+    height: 11rem;
+    width: auto;
+}
