@@ -1,10 +1,9 @@
 import './globals.css'; 
 import Navbar from '../components/Navbar/navbar'; 
 import type { Metadata } from 'next';
-import { Press_Start_2P } from 'next/font/google'; //j'importe une font pixelisé Update: elle est moche
+import { Press_Start_2P } from 'next/font/google';
 import { VT323 } from 'next/font/google';
 
-//mes fonts:
 const pressStart2P = Press_Start_2P({
   subsets: ['latin'],
   weight: '400',
@@ -28,8 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         <main>{children}</main>
+
+        {/* Ajoute ce conteneur pour les Portals */}
+        <div id="portal-root"></div>
       </body>
     </html>
   );
 }
+
 

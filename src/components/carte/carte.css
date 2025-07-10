@@ -1,45 +1,91 @@
 .carte{
     position: relative;
     height: auto;
-    width: 400px;
-    z-index: 3;
+    width: 90px;
+    z-index: 5;
 }
 .carte-container{
     position: relative;
     font-family: var(--font-vt), monospace;
+    transition: 0.2s;
+    cursor: pointer;
+}
+.carte-container:hover {
+    transform: translateY(-30px);
 }
 #nom{
     position: absolute;
-    top: 1rem;
-    left: 3rem;
+    top: -2px;
+    left: 12px;
+    font-size: 10px;
     z-index: 10;
 }
 #type{
     position: absolute;
-    top: 18rem;
-    left: 3rem;
+    top: 55px;
+    left: 12px;
+    font-size: 10px;
     z-index: 10;
 }
 #atk{
     position: absolute;
-    top: 23rem;
-    left: 3rem;
+    top: 73px;
+    left: 12px;
+    font-size: 10px;
     z-index: 10;
 }
 #bgcard{
     position: absolute;
     background-color: rgb(255, 255, 255);
-    width: 350px;
-    height: 300px;
-    z-index: 1;
-    top: 3rem;
-    left: 1.5rem;
+    width: 70px;
+    height: 50px;
+    z-index: 4;
+    top: 1rem;
+    left: 0.5rem;
 }
 .pkmnimg{
     position: absolute;
-    left: 7rem;
-    top: 5.5rem;
+    left: 1.6rem;
+    top: 1.3rem;
     z-index: 10;
-    height: 11rem;
+    height: 2.3rem;
     width: auto;
 }
+.carte-container {
+  transition: transform 0.3s ease-out, opacity 1s;
+}
+
+.carte-container.fly-out {
+  transform: translateY(-380%);
+  opacity: 0;
+}
+
+.carte-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carte-focus {
+  transform: translateY(-200%);
+  animation: dropIn 0.6s ease-out forwards;
+}
+
+@keyframes dropIn {
+  0% {
+    transform: translateY(-200%) scale(3);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(3);
+    opacity: 1;
+  }
+}
+
