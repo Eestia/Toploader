@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Image from 'next/image';
 import './CartePortal.css';
+import { usePanier } from '@/app/context/PanierContext'; // <- ici
 
 type PokemonData = {
-  id: number; // <-- ajoute l'id ici
+  id: number;
   name: string;
   apiTypes: { name: string }[];
   stats: { attack: number };
@@ -18,7 +19,6 @@ type CartePortalProps = {
   onChangeIndex: (newIndex: number) => void;
 };
 
-// Traduction du type Pokémon en français (nom d'image)
 function translateTypeToFrench(type: string) {
   const map: { [key: string]: string } = {
     normal: 'normal',
@@ -44,6 +44,32 @@ function translateTypeToFrench(type: string) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
   return translated;
+}
+
+function getPrixParType(type: string): number {
+  const prixParType: { [key: string]: number } = {
+    eau: 4,
+    glace: 4,
+    vol: 4,
+    normal: 4,
+    feu: 10,
+    dragon: 10,
+    roche: 10,
+    electrik: 10,
+    plante: 6,
+    insecte: 6,
+    poison: 6,
+    psy: 8,
+    spectre: 8,
+    tenebres: 8,
+    acier: 5,
+    sol: 5,
+    combat: 5,
+    fee: 7,
+  };
+
+  const typeCle = translateTypeToFrench(type.toLowerCase());
+  return prixParType[typeCle] ?? 4;
 }
 
 export default function CartePortal({
@@ -72,51 +98,59 @@ export default function CartePortal({
   const currentPokemon = pokemons[currentIndex];
   const mainType = currentPokemon.apiTypes[0].name;
 
-  // Synchronise l'index courant dans la liste filtrée à chaque changement de Pokémon courant
+  const { ajouterAuPanier, panier } = usePanier();
+
+  const isInCart = (id: number) => {
+    return panier.some(p => p.id === id);
+  };
+
+  const handleAddToCart = (pokemon: PokemonData) => {
+    ajouterAuPanier({
+      id: pokemon.id,
+      name: pokemon.name,
+      image: pokemon.image,
+      price: getPrixParType(pokemon.apiTypes[0].name),
+    });
+  };
+
   useEffect(() => {
     if (!sameTypePokemons) return;
     const idx = sameTypePokemons.findIndex(p => p.id === currentPokemon.id);
     setSameTypeIndex(idx >= 0 ? idx : 0);
   }, [currentIndex, sameTypePokemons, currentPokemon.id]);
 
-  // Charge la liste filtrée par type (avec id)
   const fetchSameTypePokemons = async () => {
     const res = await fetch('https://pokebuildapi.fr/api/v1/pokemon');
     const all = await res.json();
     const filtered = all.filter((p: any) => p.apiTypes[0].name === mainType);
     setSameTypePokemons(filtered);
-
-    // Synchronise l'index dans la liste filtrée
     const idx = filtered.findIndex((p: any) => p.id === currentPokemon.id);
     setSameTypeIndex(idx >= 0 ? idx : 0);
   };
 
-    // Charge la liste filtrée au premier affichage
   useEffect(() => {
     fetchSameTypePokemons();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainType]);
 
+  const prev = () => {
+    if (!sameTypePokemons || sameTypePokemons.length === 0) return;
+    const newIndex = (sameTypeIndex - 1 + sameTypePokemons.length) % sameTypePokemons.length;
+    const targetId = sameTypePokemons[newIndex].id;
+    const idxInAll = pokemons.findIndex(p => p.id === targetId);
+    if (idxInAll !== -1) {
+      onChangeIndex(idxInAll);
+    }
+  };
 
-const prev = () => {
-  if (!sameTypePokemons || sameTypePokemons.length === 0) return;
-  const newIndex = (sameTypeIndex - 1 + sameTypePokemons.length) % sameTypePokemons.length;
-  const targetId = sameTypePokemons[newIndex].id;
-  const idxInAll = pokemons.findIndex(p => p.id === targetId);
-  if (idxInAll !== -1) {
-    onChangeIndex(idxInAll);
-  }
-};
-
-const next = () => {
-  if (!sameTypePokemons || sameTypePokemons.length === 0) return;
-  const newIndex = (sameTypeIndex + 1) % sameTypePokemons.length;
-  const targetId = sameTypePokemons[newIndex].id;
-  const idxInAll = pokemons.findIndex(p => p.id === targetId);
-  if (idxInAll !== -1) {
-    onChangeIndex(idxInAll);
-  }
-};
+  const next = () => {
+    if (!sameTypePokemons || sameTypePokemons.length === 0) return;
+    const newIndex = (sameTypeIndex + 1) % sameTypePokemons.length;
+    const targetId = sameTypePokemons[newIndex].id;
+    const idxInAll = pokemons.findIndex(p => p.id === targetId);
+    if (idxInAll !== -1) {
+      onChangeIndex(idxInAll);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -133,6 +167,8 @@ const next = () => {
     currentPokemon.apiTypes.length > 0
       ? translateTypeToFrench(currentPokemon.apiTypes[0].name)
       : 'normal';
+
+  const prix = getPrixParType(currentPokemon.apiTypes[0].name);
 
   return ReactDOM.createPortal(
     <div className="carte-overlay">
@@ -161,8 +197,17 @@ const next = () => {
           }[imgType] || '#444',
         }}
       >
-        <button className="nav-btn left" onClick={prev}>←</button>
-        <button className="nav-btn right" onClick={next}>→</button>
+        <button className="nav-btn left" onClick={prev}>❮</button>
+        <button className="nav-btn right" onClick={next}>❯</button>
+
+        <p className="prix"> Prix : {prix} €</p>
+        <button
+          className="ajouter-panier"
+          disabled={isInCart(currentPokemon.id)}
+          onClick={() => handleAddToCart(currentPokemon)}
+        >
+          {isInCart(currentPokemon.id) ? "Déjà ajouté" : "Ajouter au panier"}
+        </button>
 
         <Image
           src={`/images/carte/${imgType}.png`}
@@ -200,6 +245,7 @@ const next = () => {
           margin-top: 240px;
         }
         .carte-focus {
+          font-family: var(--font-vt), monospace;
           height: 110px;
           width: 85px;
           border-radius: 10px;

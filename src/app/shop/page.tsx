@@ -43,7 +43,8 @@ export default function Shop() {
   const [filteredSuggestions, setFilteredSuggestions] = useState<PokemonData[]>([]);
   const [search, setSearch] = useState('');
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [chenVisible, setChenVisible] = useState(false); // 👈 nouveau
+  const [chenVisible, setChenVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://pokebuildapi.fr/api/v1/pokemon')
@@ -52,35 +53,41 @@ export default function Shop() {
         const filtered = filterSingleTypePokemons(data);
         setPokemons(filtered);
         setAllPokemons(data);
+        setLoading(false);
       });
   }, []);
 
-    const handleSelect = (name: string) => {
-      const index = pokemons.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-      const fullIndex = allPokemons.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+  const handleSelect = (name: string) => {
+    const index = pokemons.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+    const fullIndex = allPokemons.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
 
-      if (fullIndex >= 0) {
-        setSearch('');
-        setFilteredSuggestions([]);
-        setSelectedName(allPokemons[fullIndex].name);
-        if (index === -1) {
-          setPokemons(prev => [...prev, allPokemons[fullIndex]]);
-        }
+    if (fullIndex >= 0) {
+      setSearch('');
+      setFilteredSuggestions([]);
+      setSelectedName(allPokemons[fullIndex].name);
+      if (index === -1) {
+        setPokemons(prev => [...prev, allPokemons[fullIndex]]);
       }
-    };
+    }
+  };
 
   return (
     <section className={styles.shopSection}>
+      {/* Vendeuse pendant le chargement */}
+      {loading && (
+        <div className={styles.loadingContainer}>
+          <Image src="/images/vendeuse.gif" alt="vendeuse" width={200} height={200} />
+          <p className={styles.loadingText}>J'arrive tout de suite !</p>
+        </div>
+      )}
+
       <div className={styles.navAide}>
         <div className={styles.profChenWrapper}>
           <div className={styles.bulle} onClick={() => setChenVisible(true)}>
             Professeur Chen : Besoin d'aide ?
-
           </div>
 
-          {/* Professeur Chen glisse depuis la droite */}
           <div className={`${styles.chenContainer} ${chenVisible ? styles.visible : ''}`}>
-
             <input
               type="text"
               className={styles.searchInput}
@@ -89,7 +96,7 @@ export default function Shop() {
               onChange={(e) => {
                 const value = e.target.value;
                 setSearch(value);
-                
+
                 if (value) {
                   const results = allPokemons.filter(p =>
                     removeAccents(p.name).includes(removeAccents(value))
@@ -109,7 +116,7 @@ export default function Shop() {
                 ))}
               </ul>
             )}
-                <Image src="/images/Chen.png" alt="Professeur Chen" width={390} height={830} className={styles.chen} />
+            <Image src="/images/Chen.png" alt="Professeur Chen" width={390} height={830} className={styles.chen} />
           </div>
         </div>
       </div>

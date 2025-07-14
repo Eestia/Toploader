@@ -205,3 +205,53 @@
 .suggestions li:hover {
   background-color: #eee;
 }
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  /* animation: fadeOutVendeuse 1.5s ease 1s forwards; commence après 1s */
+  animation: walking 3s linear forwards infinite;
+  z-index: 999;
+}
+
+@keyframes fadeOutVendeuse {
+  to {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+}
+
+@keyframes walking {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+}
+.loadingText{
+  font-family: var(--font-vt), monospace;
+  color: white;
+  font-size: 30px;
+   text-shadow:
+    0 0 2px black,
+    0 0 4px black,
+    0 0 6px black,
+    0 0 8px black;
+}
