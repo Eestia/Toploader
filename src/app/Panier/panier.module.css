@@ -1,22 +1,76 @@
 .vendeusesmile{
     height: 600px;
     width: auto;
+    margin-top: 0px;
 }
 .panier{
+    font-size: 20px;
+    font-family: var(--font-vt), monospace;
     display: flex;
     align-items: center;
     height: 100vh;
+    justify-content: space-around;
+    z-index: 1;
+    position: relative;
 }
-.vendeuseblabla{
+.lacaisse{
     display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
-.vendeuseblabla p{
-    height: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+.vendeuseblabla {
+    margin-right: 40px;
+    width: 300px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
     font-family: var(--font-vt), monospace;
     background-color: white;
-    border: 7px solid rgb(22, 206, 208);
+    border: 7px solid rgb(219, 97, 59);
     border-radius: 20px;
-    border-inline: 20px solid rgb(22, 206, 208);
+    border-inline: 20px solid rgb(219, 97, 59);
+}
+.cartItem{
+    font-size: 20px;
+    font-family: var(--font-vt), monospace;
+    display: flex;
+    width: 250px;
+    justify-content: space-between;
+}
+
+/* HR dotted style */
+.total hr {
+  border: none;
+  border-top: 4px dotted #888;
+  margin: 10px 0;
+}
+.cartList{
+    border: 2px solid rgb(0, 0, 0);
+    padding: 30px;
+    background-color: blanchedalmond;
+}
+.bgpanier{
+    position: absolute;
+    height: 110vh;
+    width: 100vw;
+    z-index: 0;
+}
+.confirmationMessage {
+  font-size: 17px;
+  font-weight: bold;
+  color: green;
+  background-color: #fff8e6;
+  border: 2px solid green;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  font-family: var(--font-vt), monospace;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

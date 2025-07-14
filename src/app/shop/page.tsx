@@ -4,6 +4,7 @@ import styles from './shop.module.css';
 import Image from 'next/image';
 import Carte from '../../components/carte/carte';
 import CartePortal from '../../components/CartePortal/CartePortal';
+import { usePanier } from '../../app/context/PanierContext'; // ✅ Assure-toi que le chemin est correct
 
 type PokemonData = {
   name: string;
@@ -46,6 +47,8 @@ export default function Shop() {
   const [chenVisible, setChenVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const { ajouterAuPanier } = usePanier(); // ✅ hook appelé correctement
+
   useEffect(() => {
     fetch('https://pokebuildapi.fr/api/v1/pokemon')
       .then(res => res.json())
@@ -73,7 +76,6 @@ export default function Shop() {
 
   return (
     <section className={styles.shopSection}>
-      {/* Vendeuse pendant le chargement */}
       {loading && (
         <div className={styles.loadingContainer}>
           <Image src="/images/vendeuse.gif" alt="vendeuse" width={200} height={200} />
@@ -131,7 +133,7 @@ export default function Shop() {
 
       <div className={styles.cartes}>
         <div className={styles.rangéeArrière}>
-          {pokemons.slice(0, 9).map((poke, i) => (
+          {pokemons.slice(0, 9).map((poke) => (
             <div key={poke.name} onClick={() => setSelectedName(poke.name)} style={{ cursor: 'pointer' }}>
               <Carte
                 name={poke.name}
@@ -143,7 +145,7 @@ export default function Shop() {
           ))}
         </div>
         <div className={styles.rangéeAvant}>
-          {pokemons.slice(9, 18).map((poke, i) => (
+          {pokemons.slice(9, 18).map((poke) => (
             <div key={poke.name} onClick={() => setSelectedName(poke.name)} style={{ cursor: 'pointer' }}>
               <Carte
                 name={poke.name}
@@ -162,6 +164,7 @@ export default function Shop() {
           currentIndex={allPokemons.findIndex(p => p.name === selectedName)}
           onClose={() => setSelectedName(null)}
           onChangeIndex={idx => setSelectedName(allPokemons[idx].name)}
+          ajouterAuPanier={ajouterAuPanier} // ✅ fonction passée au composant
         />
       )}
     </section>
