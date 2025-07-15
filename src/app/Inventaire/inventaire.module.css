@@ -19,3 +19,36 @@
   width: 150px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
+.bginventaire{
+  height: 100vh;
+  width: 100vw;
+}
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #333;
+  font-size: 1.2rem;
+  gap: 1rem;
+  font-family: var(--font-vt), monospace;
+}
+
+.placeholderImage {
+  width: 350px;
+  height: auto;
+  object-fit: contain;
+ animation: slideInFromLeft 0.7s ease forwards;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

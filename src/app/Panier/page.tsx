@@ -50,7 +50,7 @@ const acheterTout = () => {
       <div className={styles.panier}>
         <div className={styles.lacaisse}>
           <div className={styles.vendeuseblabla}>
-            <p>Vous avez fait votre choix ?</p>
+            <p>{confirmation ? "À bientôt !" : "Vous avez fait votre choix ?"}</p>
           </div>
           <Image
             src={confirmation ? "/images/caisse-smile.png" : "/images/caisse.png"}

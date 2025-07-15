@@ -65,9 +65,9 @@ export default function CartePokemon({
       <Image src={`/images/carte/${translatedType}.png`} alt="fond" width={200} height={300} className={styles.pokecard}/>
       <div className={styles.bglacarte} style={{ backgroundColor: bgColors[translatedType] || '#444' }}></div>
       <Image src={pokemon.image} alt={pokemon.name} width={100} height={100} className={styles.pkmnimg} />
-      <button className={styles.addButton} onClick={handleAdd}>
+      {/* <button className={styles.addButton} onClick={handleAdd}>
         Ajouter au panier
-      </button>
+      </button> */}
     </div>
   );
 }
