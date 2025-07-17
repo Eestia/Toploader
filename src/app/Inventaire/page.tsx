@@ -27,7 +27,7 @@ export default function Inventaire() {
   }, []);
 
   const pokemonsDansInventaire = pokemons.filter(p =>
-    inventaire.some(item => item.id === p.id)
+    inventaire.some(item => String(item.id) === String(p.id))
   );
 
   return (

@@ -41,7 +41,7 @@ export default function LoginPage() {
           id="pokebox2"
         />
         <div id='deco'>
-          <h2>Oh... Vous voulez déjà nous quitter ?</h2>
+          <h2>Vous voulez déjà nous quitter ?</h2>
           <button onClick={handleLogout} id='btnquit'>
             Se déconnecter
           </button>

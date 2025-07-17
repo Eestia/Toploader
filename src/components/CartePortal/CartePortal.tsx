@@ -238,6 +238,9 @@ export default function CartePortal({
         #nom, #type, #atk {
           margin: 6px 0;
         }
+        #type{
+          font-size: 9px;
+          }
       `}</style>
     </div>,
     portalRoot

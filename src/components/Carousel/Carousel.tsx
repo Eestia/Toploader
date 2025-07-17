@@ -7,18 +7,18 @@ import styles from './carousel.module.css';
 const slides = [
   {
     src: '/images/slide1.jpg',
-    title: 'Pokémon Scarlet and Violet',
-    description: 'Catch the latest generation of Pokémon and start your new adventure!',
+    title: 'Pokémon Scarlet et Violet',
+    description: 'Attrape la dernière génération de Pokémon et commence ta nouvelle aventure !'
   },
   {
     src: '/images/slide2.jpg',
-    title: 'Koraidon and Miraidon',
-    description: 'Discover the legendary cards of the most powerful Pokémon!',
+    title: 'Koraidon et Miraidon',
+    description: 'Découvre les cartes légendaires des Pokémon les plus puissants !',
   },
   {
     src: '/images/slide3.jpg',
-    title: 'Zacian and Zamazenta',
-    description: 'Collect the rarest and most powerful cards in the game!',
+    title: 'Zacian et Zamazenta',
+    description: 'Collectionne les cartes les plus rares et les plus puissantes du jeu !',
   },
 ];
 
