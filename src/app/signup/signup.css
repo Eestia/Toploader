@@ -1,0 +1,52 @@
+#signup{
+    position: relative;
+    width: auto;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#pokebox1{
+    position: absolute;
+    z-index: 0;
+    width: 40rem;
+    height: auto;
+}
+#signup form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; 
+    position: relative;
+    z-index: 10;
+    font-family: var(--font-vt), monospace;
+    font-size: 1.5rem;
+}
+#signup form label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 1rem;
+    gap: 1rem; 
+}
+
+#signup form input {
+    margin-left: auto; 
+    text-align: right; 
+    min-width: 180px;  
+}
+#signup form button {
+    margin: 0;
+    align-self: center;
+    font-family: var(--font-vt), monospace;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+#signup form button:hover{
+    background-color: rgb(248, 3, 7);
+    color: white;
+}

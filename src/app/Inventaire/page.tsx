@@ -26,7 +26,6 @@ export default function Inventaire() {
       });
   }, []);
 
-  // Filtrer uniquement les Pokémon qui sont dans l'inventaire
   const pokemonsDansInventaire = pokemons.filter(p =>
     inventaire.some(item => item.id === p.id)
   );
@@ -55,7 +54,7 @@ export default function Inventaire() {
           <p>Tu cherches tes cartes...</p>
         </div>
       ) : pokemonsDansInventaire.length === 0 ? (
-        <p>Votre inventaire est vide.</p>
+        <p className={styles.txtp}>Oh...tu n'as aucune carte.</p>
       ) : (
         <div
           style={{

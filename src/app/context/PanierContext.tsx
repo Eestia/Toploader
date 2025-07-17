@@ -28,7 +28,7 @@ export const PanierProvider = ({ children }: { children: ReactNode }) => {
   const [argent, setArgent] = useState<number>(1000); // Argent initial
 
   const ajouterAuPanier = (pokemon: Pokemon) => {
-    setPanier((prev) => [...prev, pokemon]);
+    setPanier((prev) => [...prev, pokemon]); // pokemon doit venir de l'API complète
   };
 
   const retirerDuPanier = (id: number) => {

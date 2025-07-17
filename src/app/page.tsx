@@ -13,7 +13,6 @@ export default function Home() {
       <Pokemart/>
       </main>
       <footer>
-       <Footer/>
       </footer>
     </div>
   );

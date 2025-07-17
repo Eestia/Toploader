@@ -74,3 +74,16 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.total button{
+    background-color: rgb(235, 179, 95);
+    border: 1px solid black;
+    border-radius: 20px;
+    font-family: var(--font-vt), monospace;
+    font-size: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    transition: 0.2s ease;
+}
+.total button:hover{
+    background-color: rgb(221, 146, 33);
+}

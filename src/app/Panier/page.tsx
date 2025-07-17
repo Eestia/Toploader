@@ -5,15 +5,13 @@ import styles from './panier.module.css';
 import Image from 'next/image';
 
 export default function Panier() {
-const {
-  panier,
-  argent,
-  inventaire,
-  confirmerAchat
-} = usePanier();
+  const {
+    panier,
+    argent,
+    inventaire,
+    confirmerAchat
+  } = usePanier();
 
-
-  const total = panier.reduce((acc, item) => acc + item.price, 0);
   const [confirmation, setConfirmation] = useState(false);
 
   useEffect(() => {
@@ -24,12 +22,22 @@ const {
     };
   }, []);
 
-const acheterTout = () => {
-  if (argent < total) return;
-  confirmerAchat();
-  setConfirmation(true);
-};
+  // Calcule le prix total réel avec promo de chaque carte
+  const prixPanierAvecPromos = panier.map(item => {
+    const prix = Number(item.price);
+    return isNaN(prix) ? 0 : prix;
+  });
 
+  // Calcule la promo "5e carte offerte" sur les PRIX réduits
+  const sortedPrix = [...prixPanierAvecPromos].sort((a, b) => a - b);
+  const prixMinimum = panier.length >= 5 ? sortedPrix[0] : 0;
+  const total = prixPanierAvecPromos.reduce((acc, val) => acc + val, 0) - prixMinimum;
+
+  const acheterTout = () => {
+    if (argent < total) return;
+    confirmerAchat();
+    setConfirmation(true);
+  };
 
   const handleBuy = () => {
     if (panier.length > 0) {
@@ -73,14 +81,25 @@ const acheterTout = () => {
                       <p><strong>{item.name}</strong></p>
                     </div>
                     <div>
-                      <p>{item.price} ₽ poképièces</p>
+                      {item.originalPrice && item.originalPrice > item.price ? (
+                        <p>
+                          <s>{item.originalPrice} ₽</s> {item.price} ₽ poképièces
+                        </p>
+                      ) : (
+                        <p>{item.price} ₽ poképièces</p>
+                      )}
                     </div>
                   </div>
                 ))}
 
                 <div className={styles.total}>
                   <hr />
-                  <p><strong>Total :</strong> {total} ₽ poképièces</p>
+                  {prixMinimum > 0 && (
+                    <p style={{ color: 'green' }}>
+                      Promo : -{prixMinimum} ₽ (5e carte offerte)
+                    </p>
+                  )}
+                  <p><strong>Total :</strong> {total.toFixed(2)} ₽ poképièces</p>
                   <button className={styles.buyBtn} onClick={handleBuy}>
                     Acheter
                   </button>
@@ -91,7 +110,7 @@ const acheterTout = () => {
         ) : (
           <div className={styles.confirmationMessage}>
             <p>
-              Merci pour votre achat ! <br /> <br /> vos objets sont dans votre inventaire.
+              Merci pour votre achat ! <br /><br /> vos objets sont dans votre inventaire.
             </p>
           </div>
         )}

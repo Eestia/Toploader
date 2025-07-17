@@ -15,9 +15,12 @@ export default function Navbar() {
       <ul>
         <li><Link href="/">Acceuil</Link></li>
         <li><Link href="/shop">Shop</Link></li>
-        <li><Link href="/Panier">Panier</Link></li>
-        <li><Link href="/Inventaire">Inventaire</Link></li>
+        <li><Link href="/panier">Panier</Link></li>
+        <li><Link href="/inventaire">Inventaire</Link></li>
+        <li><Link href="/login">Se connecter</Link></li>
+        <li><Link href="/profil">Profil</Link></li>
       </ul>
+
     </nav>
   );
 }

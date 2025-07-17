@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Image from 'next/image';
 import './CartePortal.css';
-import { usePanier } from '@/app/context/PanierContext'; // <- ici
+import { usePanier } from '@/app/context/PanierContext';
+
+// Ajout du cache de promotions
+const promoCache: { [key: number]: number | null } = {};
 
 type PokemonData = {
   id: number;
@@ -21,55 +24,39 @@ type CartePortalProps = {
 
 function translateTypeToFrench(type: string) {
   const map: { [key: string]: string } = {
-    normal: 'normal',
-    fire: 'feu',
-    water: 'eau',
-    electric: 'electrik',
-    grass: 'plante',
-    ice: 'glace',
-    fighting: 'combat',
-    poison: 'poison',
-    ground: 'sol',
-    flying: 'vol',
-    psychic: 'psy',
-    bug: 'insecte',
-    rock: 'roche',
-    ghost: 'spectre',
-    dragon: 'dragon',
-    dark: 'tenebres',
-    steel: 'acier',
-    fairy: 'fee',
+    normal: 'normal', feu: 'feu', water: 'eau', electric: 'electrik', grass: 'plante',
+    ice: 'glace', fighting: 'combat', poison: 'poison', ground: 'sol', flying: 'vol',
+    psychic: 'psy', bug: 'insecte', rock: 'roche', ghost: 'spectre', dragon: 'dragon',
+    dark: 'tenebres', steel: 'acier', fairy: 'fee',
   };
   const translated = (map[type.toLowerCase()] || type.toLowerCase())
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/[̀-ͯ]/g, '');
   return translated;
 }
 
 function getPrixParType(type: string): number {
   const prixParType: { [key: string]: number } = {
-    eau: 4,
-    glace: 4,
-    vol: 4,
-    normal: 4,
-    feu: 10,
-    dragon: 10,
-    roche: 10,
-    electrik: 10,
-    plante: 6,
-    insecte: 6,
-    poison: 6,
-    psy: 8,
-    spectre: 8,
-    tenebres: 8,
-    acier: 5,
-    sol: 5,
-    combat: 5,
-    fee: 7,
+    eau: 4, glace: 4, vol: 4, normal: 4,
+    feu: 10, dragon: 10, roche: 10, electrik: 10,
+    plante: 6, insecte: 6, poison: 6,
+    psy: 8, spectre: 8, tenebres: 8,
+    acier: 5, sol: 5, combat: 5, fee: 7,
   };
-
   const typeCle = translateTypeToFrench(type.toLowerCase());
   return prixParType[typeCle] ?? 4;
+}
+
+function getPromo(pokemonId: number): number | null {
+  if (promoCache[pokemonId] !== undefined) return promoCache[pokemonId];
+  const hasPromo = pokemonId % 5 === 0;
+  if (!hasPromo) {
+    promoCache[pokemonId] = null;
+    return null;
+  }
+  const taux = Math.floor(Math.random() * 3 + 1) * 10;
+  promoCache[pokemonId] = taux;
+  return taux;
 }
 
 export default function CartePortal({
@@ -79,15 +66,10 @@ export default function CartePortal({
   onChangeIndex,
 }: CartePortalProps) {
   if (
-    !pokemons ||
-    !Array.isArray(pokemons) ||
-    pokemons.length === 0 ||
-    currentIndex < 0 ||
-    currentIndex >= pokemons.length ||
+    !pokemons || !Array.isArray(pokemons) || pokemons.length === 0 ||
+    currentIndex < 0 || currentIndex >= pokemons.length ||
     !pokemons[currentIndex]?.apiTypes
-  ) {
-    return null;
-  }
+  ) return null;
 
   const portalRoot = document.getElementById('portal-root');
   if (!portalRoot) return null;
@@ -97,19 +79,20 @@ export default function CartePortal({
 
   const currentPokemon = pokemons[currentIndex];
   const mainType = currentPokemon.apiTypes[0].name;
-
   const { ajouterAuPanier, panier } = usePanier();
 
-  const isInCart = (id: number) => {
-    return panier.some(p => p.id === id);
-  };
+  const isInCart = (id: number) => panier.some(p => p.id === id);
+
+  const promo = getPromo(currentPokemon.id);
+  const prixBase = getPrixParType(mainType);
+  const prixFinal = promo ? (prixBase * (1 - promo / 100)).toFixed(2) : prixBase;
 
   const handleAddToCart = (pokemon: PokemonData) => {
     ajouterAuPanier({
       id: pokemon.id,
       name: pokemon.name,
       image: pokemon.image,
-      price: getPrixParType(pokemon.apiTypes[0].name),
+      price: prixFinal,
     });
   };
 
@@ -133,42 +116,31 @@ export default function CartePortal({
   }, [mainType]);
 
   const prev = () => {
-    if (!sameTypePokemons || sameTypePokemons.length === 0) return;
+    if (!sameTypePokemons?.length) return;
     const newIndex = (sameTypeIndex - 1 + sameTypePokemons.length) % sameTypePokemons.length;
     const targetId = sameTypePokemons[newIndex].id;
     const idxInAll = pokemons.findIndex(p => p.id === targetId);
-    if (idxInAll !== -1) {
-      onChangeIndex(idxInAll);
-    }
+    if (idxInAll !== -1) onChangeIndex(idxInAll);
   };
 
   const next = () => {
-    if (!sameTypePokemons || sameTypePokemons.length === 0) return;
+    if (!sameTypePokemons?.length) return;
     const newIndex = (sameTypeIndex + 1) % sameTypePokemons.length;
     const targetId = sameTypePokemons[newIndex].id;
     const idxInAll = pokemons.findIndex(p => p.id === targetId);
-    if (idxInAll !== -1) {
-      onChangeIndex(idxInAll);
-    }
+    if (idxInAll !== -1) onChangeIndex(idxInAll);
   };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.classList.contains('carte-overlay')) {
-        onClose();
-      }
+      if (target.classList.contains('carte-overlay')) onClose();
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-  const imgType =
-    currentPokemon.apiTypes.length > 0
-      ? translateTypeToFrench(currentPokemon.apiTypes[0].name)
-      : 'normal';
-
-  const prix = getPrixParType(currentPokemon.apiTypes[0].name);
+  const imgType = translateTypeToFrench(mainType);
 
   return ReactDOM.createPortal(
     <div className="carte-overlay">
@@ -176,31 +148,22 @@ export default function CartePortal({
         className="carte-focus"
         style={{
           backgroundColor: {
-            normal: '#A8A878',
-            feu: '#F08030',
-            eau: '#6890F0',
-            electrik: '#F8D030',
-            plante: '#78C850',
-            glace: '#98D8D8',
-            combat: '#C03028',
-            poison: '#A040A0',
-            sol: '#E0C068',
-            vol: '#A890F0',
-            psy: '#F85888',
-            insecte: '#A8B820',
-            roche: '#B8A038',
-            spectre: '#705898',
-            dragon: '#7038F8',
-            tenebres: '#705848',
-            acier: '#B8B8D0',
-            fee: '#EE99AC',
+            normal: '#A8A878', feu: '#F08030', eau: '#6890F0', electrik: '#F8D030',
+            plante: '#78C850', glace: '#98D8D8', combat: '#C03028', poison: '#A040A0',
+            sol: '#E0C068', vol: '#A890F0', psy: '#F85888', insecte: '#A8B820',
+            roche: '#B8A038', spectre: '#705898', dragon: '#7038F8',
+            tenebres: '#705848', acier: '#B8B8D0', fee: '#EE99AC',
           }[imgType] || '#444',
         }}
       >
         <button className="nav-btn left" onClick={prev}>❮</button>
         <button className="nav-btn right" onClick={next}>❯</button>
 
-        <p className="prix"> Prix : {prix} €</p>
+        <p className="prix">
+          Prix : {prixFinal} €
+          {promo && <span className="promo">-{promo}%</span>}
+        </p>
+
         <button
           className="ajouter-panier"
           disabled={isInCart(currentPokemon.id)}
