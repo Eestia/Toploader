@@ -39,15 +39,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: left;
+    text-align: right;
     width: 100%;
     margin-bottom: 1rem;
     gap: 1rem; 
 }
 #login form input {
-    margin-left: auto; 
-    text-align: right; 
-    min-width: 180px;  
+    margin-left: auto;
+    text-align: left; 
+    min-width: 180px;
 }
 #login form button {
     margin: 0;
